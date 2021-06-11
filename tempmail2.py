@@ -35,8 +35,7 @@ class TempMail(object):
                 self.api_domain)
             req = requests.get(url, headers={
                 'x-rapidapi-host': self.api_domain,
-                'x-rapidapi-key': self.api_key,
-                'useQueryString': True
+                'x-rapidapi-key': self.api_key
             })
             domains = req.json()
             setattr(self, '_available_domains', domains)
@@ -100,8 +99,7 @@ class TempMail(object):
             self.api_domain, email_hash)
         req = requests.get(url, headers={
             'x-rapidapi-host': self.api_domain,
-            'x-rapidapi-key': self.api_key,
-            'useQueryString': True
+            'x-rapidapi-key': self.api_key
         })
         return req.json()
 
@@ -120,8 +118,7 @@ class TempMail(object):
 
         req = requests.get(url, headers={
             'x-rapidapi-host': self.api_domain,
-            'x-rapidapi-key': self.api_key,
-            'useQueryString': True
+            'x-rapidapi-key': self.api_key
         })
         return req.json()
 
@@ -140,8 +137,7 @@ class TempMail(object):
 
         req = requests.get(url, headers={
             'x-rapidapi-host': self.api_domain,
-            'x-rapidapi-key': self.api_key,
-            'useQueryString': True
+            'x-rapidapi-key': self.api_key
         })
         return req.json()
 
@@ -160,8 +156,7 @@ class TempMail(object):
 
         req = requests.get(url, headers={
             'x-rapidapi-host': self.api_domain,
-            'x-rapidapi-key': self.api_key,
-            'useQueryString': True
+            'x-rapidapi-key': self.api_key
         })
         return req.json()
 
@@ -181,7 +176,6 @@ class TempMail(object):
 
         req = requests.get(url, headers={
             'x-rapidapi-host': self.api_domain,
-            'x-rapidapi-key': self.api_key,
-            'useQueryString': True
+            'x-rapidapi-key': self.api_key
         })
         return req.json()

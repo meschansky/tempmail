@@ -31,11 +31,12 @@ class TempMail(object):
         Return list of available domains for use in email address.
         """
         if not hasattr(self, '_available_domains'):
-            url = 'https://{0}/request/domains/format/json/'.format(
+            url = 'https://{0}/request/domains/'.format(
                 self.api_domain)
             req = requests.get(url, headers={
-                'x-rapidapi-host': self.domain,
-                'x-rapidapi-key': self.api_key
+                'x-rapidapi-host': self.api_domain,
+                'x-rapidapi-key': self.api_key,
+                'useQueryString': true
             })
             domains = req.json()
             setattr(self, '_available_domains', domains)
@@ -95,11 +96,12 @@ class TempMail(object):
         if email_hash is None:
             email_hash = self.get_hash(email.encode('utf-8'))
 
-        url = 'https://{0}/request/mail/id/{1}/format/json/'.format(
+        url = 'https://{0}/request/mail/id/{1}'.format(
             self.api_domain, email_hash)
         req = requests.get(url, headers={
-            "X-Mashape-Key": self.api_key,
-            "Accept": "application/json"
+            'x-rapidapi-host': self.api_domain,
+            'x-rapidapi-key': self.api_key,
+            'useQueryString': true
         })
         return req.json()
 
@@ -113,12 +115,13 @@ class TempMail(object):
         if email_hash is None:
             email_hash = self.get_hash(email.encode('utf-8'))
 
-        url = 'https://{0}/request/delete/id/{1}/format/json/'.format(
+        url = 'https://{0}/request/delete/id/{1}'.format(
             self.api_domain, email_hash)
 
         req = requests.get(url, headers={
-            "X-Mashape-Key": self.api_key,
-            "Accept": "application/json"
+            'x-rapidapi-host': self.api_domain,
+            'x-rapidapi-key': self.api_key,
+            'useQueryString': true
         })
         return req.json()
 
@@ -132,12 +135,13 @@ class TempMail(object):
         if email_hash is None:
             email_hash = self.get_hash(email.encode('utf-8'))
 
-        url = 'https://{0}/request/attachments/id/{1}/format/json/'.format(
+        url = 'https://{0}/request/atchmnts/id/{1}'.format(
             self.api_domain, email_hash)
 
         req = requests.get(url, headers={
-            "X-Mashape-Key": self.api_key,
-            "Accept": "application/json"
+            'x-rapidapi-host': self.api_domain,
+            'x-rapidapi-key': self.api_key,
+            'useQueryString': true
         })
         return req.json()
 
@@ -151,12 +155,13 @@ class TempMail(object):
         if email_hash is None:
             email_hash = self.get_hash(email.encode('utf-8'))
 
-        url = 'https://{0}/request/one_mail/id/{1}/format/json/'.format(
+        url = 'https://{0}/request/one_mail/id/{1}'.format(
             self.api_domain, email_hash)
 
         req = requests.get(url, headers={
-            "X-Mashape-Key": self.api_key,
-            "Accept": "application/json"
+            'x-rapidapi-host': self.api_domain,
+            'x-rapidapi-key': self.api_key,
+            'useQueryString': true
         })
         return req.json()
 
@@ -171,11 +176,12 @@ class TempMail(object):
         if email_hash is None:
             email_hash = self.get_hash(email.encode('utf-8'))
 
-        url = 'https://{0}/request/source/id/{1}/format/json/'.format(
+        url = 'https://{0}/request/source/id/{1}'.format(
             self.api_domain, email_hash)
 
         req = requests.get(url, headers={
-            "X-Mashape-Key": self.api_key,
-            "Accept": "application/json"
+            'x-rapidapi-host': self.api_domain,
+            'x-rapidapi-key': self.api_key,
+            'useQueryString': true
         })
         return req.json()

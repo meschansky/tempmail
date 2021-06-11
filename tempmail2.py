@@ -93,9 +93,9 @@ class TempMail(object):
         if email is None:
             email = self.get_email_address()
         if email_hash is None:
-            email_hash = self.get_hash(email.encode('utf-8'))
+            email_hash = self.get_hash(email)
 
-        url = 'https://{0}/request/mail/id/{1}'.format(
+        url = 'https://{0}/request/mail/id/{1}/null'.format(
             self.api_domain, email_hash)
         req = requests.get(url, headers={
             'x-rapidapi-host': self.api_domain,
@@ -103,17 +103,19 @@ class TempMail(object):
         })
         return req.json()
 
-    def delete_email(self, email, email_hash=None):
+    def delete_email(self, email=None, email_hash=None):
         """
         Delete a given email in a given email address
 
         :param email: (optional) email address.
         :param email_hash: (optional) md5 hash from email address.
         """
+        if email is None:
+            email = self.get_email_address()
         if email_hash is None:
-            email_hash = self.get_hash(email.encode('utf-8'))
+            email_hash = self.get_hash(email)
 
-        url = 'https://{0}/request/delete/id/{1}'.format(
+        url = 'https://{0}/request/delete/id/{1}/'.format(
             self.api_domain, email_hash)
 
         req = requests.get(url, headers={
@@ -122,17 +124,19 @@ class TempMail(object):
         })
         return req.json()
 
-    def get_attachments(self, email, email_hash=None):
+    def get_attachments(self, email=None, email_hash=None):
         """
         Get attachments of a given email in a given email address
 
         :param email: (optional) email address.
         :param email_hash: (optional) md5 hash from email address.
         """
+        if email is None:
+            email = self.get_email_address()        
         if email_hash is None:
-            email_hash = self.get_hash(email.encode('utf-8'))
+            email_hash = self.get_hash(email)
 
-        url = 'https://{0}/request/atchmnts/id/{1}'.format(
+        url = 'https://{0}/request/atchmnts/id/{1}/'.format(
             self.api_domain, email_hash)
 
         req = requests.get(url, headers={
@@ -141,17 +145,19 @@ class TempMail(object):
         })
         return req.json()
 
-    def get_message(self, email, email_hash=None):
+    def get_message(self, email=None, email_hash=None):
         """
         Get a given email in a given email address
 
         :param email: (optional) email address.
         :param email_hash: (optional) md5 hash from email address.
         """
+        if email is None:
+            email = self.get_email_address()
         if email_hash is None:
-            email_hash = self.get_hash(email.encode('utf-8'))
+            email_hash = self.get_hash(email)
 
-        url = 'https://{0}/request/one_mail/id/{1}'.format(
+        url = 'https://{0}/request/one_mail/id/{1}/'.format(
             self.api_domain, email_hash)
 
         req = requests.get(url, headers={
@@ -161,17 +167,19 @@ class TempMail(object):
         return req.json()
 
 
-    def source_message(self, email, email_hash=None):
+    def source_message(self, email=None, email_hash=None):
         """
         Source a given email in a given email address
 
         :param email: (optional) email address.
         :param email_hash: (optional) md5 hash from email address.
         """
+        if email is None:
+            email = self.get_email_address()
         if email_hash is None:
-            email_hash = self.get_hash(email.encode('utf-8'))
+            email_hash = self.get_hash(email)
 
-        url = 'https://{0}/request/source/id/{1}'.format(
+        url = 'https://{0}/request/source/id/{1}/'.format(
             self.api_domain, email_hash)
 
         req = requests.get(url, headers={

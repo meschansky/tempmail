@@ -6,7 +6,7 @@ Python API Wrapper version 2 for `temp-mail.org <https://temp-mail.org/>`_ servi
 Requirements
 ------------
 
-`requests <https://crate.io/packages/requests/>`_ - required.
+`requests <https://pypi.org/project/requests/>`_ - required.
 
 You can install it through ::
 
@@ -22,21 +22,21 @@ Installing with pip::
 Usage
 -----
 
-Before you can use this, you need to get api key from https://rapidapi.com/Privatix/api/temp-mail.
+Before you can use this, you need to get an API key from https://rapidapi.com/Privatix/api/temp-mail.
 
-So create an account on Mashape and get the Mashape Api Key
+So create an account on RapidAPI and get the RapidAPI Key for the Temp Mail API.
 
 Get all emails from given email login and domain::
 
-    from tempMail2 import TempMail
+    from tempmail2 import TempMail
 
-    tm = TempMail(api_key='apikey', login='denis', domain='@gnail.pw')
-    print tm.get_mailbox()  # list of emails in denis@gnail.pw
+    tm = TempMail(api_key='apikey', login='denis', domain='@cevipsa.com')
+    print(tm.get_mailbox())  # list of emails in denis@cevipsa.com
 
 Generate email address and get emails from it::
 
-    from tempMail2 import TempMail
+    from tempmail2 import TempMail
 
     tm = TempMail(api_key='apikey')
-    email = tm.get_email_address()  # v5gwnrnk7f@gnail.pw
-    print tm.get_mailbox(email)  # list of emails
+    email = tm.get_email_address()  # v5gwnrnk7f@cevipsa.com
+    print(tm.get_mailbox(email))  # list of emails

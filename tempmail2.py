@@ -5,15 +5,16 @@ from hashlib import md5
 import requests
 
 
-class TempMail(object):
+class TempMail:
     """
     API Wrapper for service which provides temporary email address.
 
+    :param api_key: RapidAPI key for authentication.
     :param login: (optional) login for email address.
     :param domain: (optional) domain (from current available)
     for email address.
     :param api_domain: (optional) domain for temp-mail api.
-    Default value is ``privatix-temp-mail-v1.p.mashape.com``.
+    Default value is ``privatix-temp-mail-v1.p.rapidapi.com``.
     """
 
     def __init__(self, api_key, login=None, domain=None, api_domain='privatix-temp-mail-v1.p.rapidapi.com'):
@@ -23,7 +24,7 @@ class TempMail(object):
         self.api_key = api_key
 
     def __repr__(self):
-        return u'<TempMail [{0}]>'.format(self.get_email_address())
+        return f'<TempMail [{self.get_email_address()}]>'
 
     @property
     def available_domains(self):
@@ -31,14 +32,19 @@ class TempMail(object):
         Return list of available domains for use in email address.
         """
         if not hasattr(self, '_available_domains'):
-            url = 'https://{0}/request/domains/'.format(
-                self.api_domain)
-            req = requests.get(url, headers={
-                'x-rapidapi-host': self.api_domain,
-                'x-rapidapi-key': self.api_key
-            })
-            domains = req.json()
-            setattr(self, '_available_domains', domains)
+            url = f'https://{self.api_domain}/request/domains/'
+            try:
+                req = requests.get(url, headers={
+                    'x-rapidapi-host': self.api_domain,
+                    'x-rapidapi-key': self.api_key
+                })
+                req.raise_for_status()  # Raise exception for 4XX/5XX responses
+                domains = req.json()
+                setattr(self, '_available_domains', domains)
+            except requests.exceptions.RequestException as e:
+                raise ConnectionError(f"Error fetching available domains: {str(e)}")
+            except ValueError:
+                raise ValueError("Invalid JSON response when fetching domains")
         return self._available_domains
 
     def generate_login(self, min_length=6, max_length=10, digits=True):
@@ -72,7 +78,7 @@ class TempMail(object):
             self.domain = random.choice(available_domains)
         elif self.domain not in available_domains:
             raise ValueError('Domain not found in available domains!')
-        return u'{0}{1}'.format(self.login, self.domain)
+        return f'{self.login}{self.domain}'
 
     def get_hash(self, email):
         """
@@ -95,13 +101,18 @@ class TempMail(object):
         if email_hash is None:
             email_hash = self.get_hash(email)
 
-        url = 'https://{0}/request/mail/id/{1}/null'.format(
-            self.api_domain, email_hash)
-        req = requests.get(url, headers={
-            'x-rapidapi-host': self.api_domain,
-            'x-rapidapi-key': self.api_key
-        })
-        return req.json()
+        url = f'https://{self.api_domain}/request/mail/id/{email_hash}/'
+        try:
+            req = requests.get(url, headers={
+                'x-rapidapi-host': self.api_domain,
+                'x-rapidapi-key': self.api_key
+            })
+            req.raise_for_status()
+            return req.json()
+        except requests.exceptions.RequestException as e:
+            raise ConnectionError(f"Error fetching mailbox: {str(e)}")
+        except ValueError:
+            raise ValueError("Invalid JSON response when fetching mailbox")
 
     def delete_email(self, email=None, email_hash=None):
         """
@@ -115,14 +126,19 @@ class TempMail(object):
         if email_hash is None:
             email_hash = self.get_hash(email)
 
-        url = 'https://{0}/request/delete/id/{1}/'.format(
-            self.api_domain, email_hash)
+        url = f'https://{self.api_domain}/request/delete/id/{email_hash}/'
 
-        req = requests.get(url, headers={
-            'x-rapidapi-host': self.api_domain,
-            'x-rapidapi-key': self.api_key
-        })
-        return req.json()
+        try:
+            req = requests.get(url, headers={
+                'x-rapidapi-host': self.api_domain,
+                'x-rapidapi-key': self.api_key
+            })
+            req.raise_for_status()
+            return req.json()
+        except requests.exceptions.RequestException as e:
+            raise ConnectionError(f"Error deleting email: {str(e)}")
+        except ValueError:
+            raise ValueError("Invalid JSON response when deleting email")
 
     def get_attachments(self, email=None, email_hash=None):
         """
@@ -136,14 +152,19 @@ class TempMail(object):
         if email_hash is None:
             email_hash = self.get_hash(email)
 
-        url = 'https://{0}/request/atchmnts/id/{1}/'.format(
-            self.api_domain, email_hash)
+        url = f'https://{self.api_domain}/request/atchmnts/id/{email_hash}/'
 
-        req = requests.get(url, headers={
-            'x-rapidapi-host': self.api_domain,
-            'x-rapidapi-key': self.api_key
-        })
-        return req.json()
+        try:
+            req = requests.get(url, headers={
+                'x-rapidapi-host': self.api_domain,
+                'x-rapidapi-key': self.api_key
+            })
+            req.raise_for_status()
+            return req.json()
+        except requests.exceptions.RequestException as e:
+            raise ConnectionError(f"Error fetching attachments: {str(e)}")
+        except ValueError:
+            raise ValueError("Invalid JSON response when fetching attachments")
 
     def get_message(self, email=None, email_hash=None):
         """
@@ -157,14 +178,19 @@ class TempMail(object):
         if email_hash is None:
             email_hash = self.get_hash(email)
 
-        url = 'https://{0}/request/one_mail/id/{1}/'.format(
-            self.api_domain, email_hash)
+        url = f'https://{self.api_domain}/request/one_mail/id/{email_hash}/'
 
-        req = requests.get(url, headers={
-            'x-rapidapi-host': self.api_domain,
-            'x-rapidapi-key': self.api_key
-        })
-        return req.json()
+        try:
+            req = requests.get(url, headers={
+                'x-rapidapi-host': self.api_domain,
+                'x-rapidapi-key': self.api_key
+            })
+            req.raise_for_status()
+            return req.json()
+        except requests.exceptions.RequestException as e:
+            raise ConnectionError(f"Error fetching message: {str(e)}")
+        except ValueError:
+            raise ValueError("Invalid JSON response when fetching message")
 
 
     def source_message(self, email=None, email_hash=None):
@@ -179,11 +205,16 @@ class TempMail(object):
         if email_hash is None:
             email_hash = self.get_hash(email)
 
-        url = 'https://{0}/request/source/id/{1}/'.format(
-            self.api_domain, email_hash)
+        url = f'https://{self.api_domain}/request/source/id/{email_hash}/'
 
-        req = requests.get(url, headers={
-            'x-rapidapi-host': self.api_domain,
-            'x-rapidapi-key': self.api_key
-        })
-        return req.json()
+        try:
+            req = requests.get(url, headers={
+                'x-rapidapi-host': self.api_domain,
+                'x-rapidapi-key': self.api_key
+            })
+            req.raise_for_status()
+            return req.json()
+        except requests.exceptions.RequestException as e:
+            raise ConnectionError(f"Error fetching message source: {str(e)}")
+        except ValueError:
+            raise ValueError("Invalid JSON response when fetching message source")
